@@ -19,11 +19,12 @@ afterAll(() => {
 
 describe('App', () => {
     describe('GET /api/categories', () => {
-        it('should when passed an array of objects, return that array of objects', () => {
+        it('should when passed an array of category objects without a query, return that array of category objects', () => {
             return request(app)
             .get('/api/categories')
             .expect(200)
             .then(({body}) => {
+                expect(body.length).toBe(4)
                 body.forEach((category) => {
                     expect(category).toHaveProperty('slug', expect.any(String))
                     expect(category).toHaveProperty('description', expect.any(String))
@@ -37,13 +38,32 @@ describe('App', () => {
          });
     });
     describe('GET /api/reviews', () => {
-        it('should return an array of objects sorted into descending order, with a count of how many comments have the same review_id', () => {
+        it('should return an array of review objects, with an added key of comment_count populated with the count of review_ids within comments', () => {
             return request(app)
             .get('/api/reviews')
             .expect(200)
             .then(({body}) => {
-
+                expect(body.length).toBe(13)
+                body.forEach((review) => {
+                    expect(review).toHaveProperty('title', expect.any(String))
+                    expect(review).toHaveProperty('designer', expect.any(String))
+                    expect(review).toHaveProperty('review_id', expect.any(Number))
+                    expect(review).toHaveProperty('owner', expect.any(String))
+                    expect(review).toHaveProperty('review_img_url', expect.any(String))
+                    expect(review).toHaveProperty('category', expect.any(String))
+                    expect(review).toHaveProperty('created_at', expect.any(String))
+                    expect(review).toHaveProperty('votes', expect.any(Number))
+                    expect(review).toHaveProperty('comment_count', expect.any(Number)) 
+                })
             })
+        });
+        it('should return the array of review objects in descending order based off the created_at key', () => {
+                return request(app)
+                .get('/api/reviews')
+                .expect(200)
+                .then(({body}) => {
+                    expect(body).toBeSortedBy("created_at", {descending: true})
+                })
         });
     });
 });

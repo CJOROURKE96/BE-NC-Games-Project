@@ -3,9 +3,7 @@ const {getCategories, getReviews} = require('../controller/controller')
 const app = express()
 
 app.get('/api/categories', getCategories)
-// return all
-// plus comment count AS comment_count (WHERE comments.review_id === reviews.review_id)
-// created_at in DESC order
+
 app.get('/api/reviews', getReviews)
 
 
@@ -19,7 +17,6 @@ if(err.status) {
 })
 
 app.use((err, request, response, next) => {
-    console.log("hello")
     if(err.status === "22P02") {
         response.status(400).send({msg: 'Bad Request'})
     } else {
