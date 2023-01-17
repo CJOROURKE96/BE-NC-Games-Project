@@ -1,8 +1,10 @@
 const express = require('express')
-const {getCategories} = require('../controller/controller')
+const {getCategories, getReviews} = require('../controller/controller')
 const app = express()
 
 app.get('/api/categories', getCategories)
+
+app.get('/api/reviews', getReviews)
 
 
 app.use((err, request, response, next) => {
@@ -15,7 +17,6 @@ if(err.status) {
 })
 
 app.use((err, request, response, next) => {
-    console.log("hello")
     if(err.status === "22P02") {
         response.status(400).send({msg: 'Bad Request'})
     } else {
