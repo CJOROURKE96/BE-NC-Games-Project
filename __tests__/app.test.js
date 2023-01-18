@@ -91,7 +91,7 @@ describe('App', () => {
             .get('/api/reviews/1000')
             .expect(404)
             .then(({body}) => {
-                expect(body.msg.msg).toBe("review_id does not exist")
+                expect(body.err).toBe("review_id does not exist")
             })
             
         });

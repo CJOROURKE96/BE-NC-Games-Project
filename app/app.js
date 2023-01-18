@@ -10,13 +10,6 @@ app.get("/api/reviews/:review_id", getReviewsByReviewId)
 
 
 
-app.use((err, request, response, next) => {
-if(err.status) {
-    response.status(err.status).send({msg: err})
-} else {
-    next(err)
-}
-})
 
 app.use((err, request, response, next) => {
     if(err.code === "22P02") {
