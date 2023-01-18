@@ -26,10 +26,12 @@ function fetchReviews() {
 function fetchCommentsByReviewId(id) {
     const sql = `SELECT * FROM comments WHERE comments.review_id = $1 ORDER BY created_at DESC;`
     return db.query(sql, [id]).then(({rows}) => {
-        if (!rows.length) {
+        if (!rows.length && id < 1 || id > 13) {
             return Promise.reject({status: 404, msg: "invalid review_id input"})
+        } else if (rows === []){
+            return Promise.reject({status: 200, msg: "Does This Work??"})
         } else {
-            return rows
+        return rows
         }
     })
 }

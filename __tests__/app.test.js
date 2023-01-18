@@ -91,18 +91,20 @@ describe('App', () => {
                     expect(body.comments).toBeSortedBy("created_at", {descending: true})
             })
         });
-        // it('should return 200 for a request to a blank array', () => {
-        //     return request(app)
-        //         .get('/api/reviews/1/comments')
-        //         .expect(200)
-        //         .then(({body}) => {
-        //             expect(body.comments).toEqual([])
-        //      })
-        // });
+        it('should return 200 for a request to a blank comment array', () => {
+            return request(app)
+                .get('/api/reviews/1/comments')
+                .expect(200)
+                .then(({body}) => {
+                    expect(body.comments).toEqual([])
+             })
+        });
         it('should return 404 if review_id is invalid', () => {
             return request(app)
                 .get('/api/reviews/1000/comments')
                 .expect(404)
+                .then(({body}) => {
+                })
         });
     });
 });
