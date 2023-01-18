@@ -23,5 +23,16 @@ function fetchReviews() {
     })
 }
 
+function fetchReviewsByReviewId(id) {
+    return db.query(`SELECT reviews.review_id, reviews.title, reviews.review_body, reviews.designer, reviews.review_img_url, reviews.votes, reviews.category, reviews.owner, reviews.created_at FROM reviews WHERE reviews.review_id = $1;`, [id]).then(({rows}) => {
+        if (!rows.length) {
+            return Promise.reject({status: 404, msg: "review_id does not exist"})
+        } else {
+        return rows[0]
+        }
+    })
+}
 
-module.exports = {fetchCategories, fetchReviews}
+
+
+module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId}
