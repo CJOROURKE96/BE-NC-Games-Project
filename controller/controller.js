@@ -15,10 +15,8 @@ function getReviews(request, response, next) {
 
 function getCommentsByReviewId(request, response, next) {
     const {review_id} = request.params
-    console.log(review_id, "<-- ID")
-    fetchCommentsByReviewId().then((result) => {
-        console.log(result, "<-- Controller")
-        response.status(200).send({comments: [result]})
+    fetchCommentsByReviewId(review_id).then((result) => {
+        response.status(200).send({comments: result})
     }).catch(next)
 }
 

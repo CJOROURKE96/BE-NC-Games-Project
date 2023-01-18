@@ -71,10 +71,26 @@ describe('App', () => {
             return request(app)
             .get("/api/reviews/2/comments")
             .expect(200)
-            .then(({body}) => {
-                console.log(body, "<-- BODY TEST")
-                expect(body)
+            .then(({body: {comments}}) => {
+                expect(comments.length).toBe(3)
+                comments.forEach((comment) => {
+                    expect(comment).toHaveProperty("comment_id", expect.any(Number))
+                    expect(comment).toHaveProperty("body", expect.any(String))
+                    expect(comment).toHaveProperty("review_id", expect.any(Number))
+                    expect(comment).toHaveProperty("author", expect.any(String))
+                    expect(comment).toHaveProperty("votes", expect.any(Number))
+                    expect(comment).toHaveProperty("created_at", expect.any(String))
+                })
             })
         });
+        it('should return comments with the most recent displayed first ', () => {
+            return request(app)
+                .get('/api/reviews/2/comments')
+                .expect(200)
+                .then(({body}) => {
+                    expect(body.comments).toBeSortedBy("created_at", {descending: true})
+            })
+        });
+        
     });
 });

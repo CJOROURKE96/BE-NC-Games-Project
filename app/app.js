@@ -6,8 +6,6 @@ app.get('/api/categories', getCategories)
 
 app.get('/api/reviews', getReviews)
 
-
-
 app.get('/api/reviews/:review_id/comments', getCommentsByReviewId)
 
 
@@ -21,7 +19,7 @@ if(err.status) {
 })
 
 app.use((err, request, response, next) => {
-    if(err.status === "22P02") {
+    if(err.code === "22P02") {
         response.status(400).send({msg: 'Bad Request'})
     } else {
         next(err)
