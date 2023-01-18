@@ -24,7 +24,7 @@ function fetchReviews() {
 }
 
 function fetchCommentsByReviewId(id) {
-    const sql = `SELECT * FROM comments WHERE review_id = $1 ORDER BY created_at ;`
+    const sql = `SELECT * FROM comments WHERE comments.review_id = $1 ORDER BY created_at DESC;`
     return db.query(sql, [id]).then(({rows}) => {
         console.log(rows, "<-- MODEL")
         return rows
