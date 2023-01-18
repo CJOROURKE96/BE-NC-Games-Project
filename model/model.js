@@ -23,5 +23,13 @@ function fetchReviews() {
     })
 }
 
+function fetchCommentsByReviewId(id) {
+    const sql = `SELECT * FROM comments WHERE review_id = $1 ORDER BY created_at ;`
+    return db.query(sql, [id]).then(({rows}) => {
+        console.log(rows, "<-- MODEL")
+        return rows
+    })
+}
 
-module.exports = {fetchCategories, fetchReviews}
+
+module.exports = {fetchCategories, fetchReviews, fetchCommentsByReviewId}

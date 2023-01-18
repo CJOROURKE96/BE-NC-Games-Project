@@ -66,4 +66,15 @@ describe('App', () => {
                 })
         });
     });
+    describe('GET /api/reviews/:review_id/comments', () => {
+        it('should return an array of comments based on input review_id', () => {
+            return request(app)
+            .get("/api/reviews/2/comments")
+            .expect(200)
+            .then(({body}) => {
+                console.log(body, "<-- BODY TEST")
+                expect(body)
+            })
+        });
+    });
 });
