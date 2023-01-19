@@ -1,6 +1,7 @@
 const { response } = require('../app/app')
 const {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId} = require('../model/model')
 
+
 function getCategories(request, response, next) {
 fetchCategories().then((result) => {
     response.status(200).send(result)
@@ -13,6 +14,7 @@ function getReviews(request, response, next) {
     }).catch(next)
 }
 
+
 function getReviewsByReviewId(request, response, next) {
     const {review_id} = request.params
     fetchReviewsByReviewId(review_id)
@@ -23,6 +25,7 @@ function getReviewsByReviewId(request, response, next) {
 }
 
 
+
 function getCommentsByReviewId(request, response, next) {
     const {review_id} = request.params
     Promise.all([fetchCommentsByReviewId(review_id), fetchReviewsByReviewId(review_id)]).then(([result]) => {
@@ -31,3 +34,4 @@ function getCommentsByReviewId(request, response, next) {
 }
 
 module.exports = {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId}
+

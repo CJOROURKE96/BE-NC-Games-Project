@@ -24,31 +24,33 @@ function fetchReviews() {
   });
 }
 
-function fetchReviewsByReviewId(id) {
-  return db
-    .query(
-      `SELECT reviews.review_id, reviews.title, reviews.review_body, reviews.designer, reviews.review_img_url, reviews.votes, reviews.category, reviews.owner, reviews.created_at FROM reviews WHERE reviews.review_id = $1;`,
-      [id]
-    )
-    .then(({ rows }) => {
-      if (!rows.length) {
-        return Promise.reject({ status: 404, msg: 'review_id does not exist' });
-      } else {
-        return rows[0];
-      }
-    });
-}
 
+function fetchReviewsByReviewId(id) {
+    return db.query(`SELECT reviews.review_id, reviews.title, reviews.review_body, reviews.designer, reviews.review_img_url, reviews.votes, reviews.category, reviews.owner, reviews.created_at FROM reviews WHERE reviews.review_id = $1;`, [id]).then(({rows}) => {
+        if (!rows.length) {
+            return Promise.reject({status: 404, msg: "review_id does not exist"})
+        } else {
+        return rows[0]
+        }
+      })
+    }
 function fetchCommentsByReviewId(id) {
-  const sql = `SELECT * FROM comments WHERE comments.review_id = $1 ORDER BY comments.created_at DESC;`;
-  return db.query(sql, [id]).then(({ rows }) => {
-    return rows;
+    const sql = `SELECT * FROM comments WHERE comments.review_id = $1 ORDER BY created_at DESC;`
+    return db.query(sql, [id]).then(({rows}) => {
+        if (!rows.length && id < 1 || id > 13) {
+            return Promise.reject({status: 404, msg: "invalid review_id input"})
+        } else if (rows === []){
+            return Promise.reject({status: 200, msg: "Does This Work??"})
+        } else {
+        return rows
+        }
     })
 }
 
-module.exports = {
-  fetchCategories,
-  fetchReviews,
-  fetchReviewsByReviewId,
-  fetchCommentsByReviewId,
-};
+
+
+
+
+
+module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId}
+
