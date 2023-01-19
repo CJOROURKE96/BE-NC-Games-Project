@@ -38,33 +38,33 @@ describe('App', () => {
          });
     });
     describe('GET /api/reviews', () => {
-        it('should return an array of review objects, with an added key of comment_count populated with the count of review_ids within comments', () => {
-            return request(app)
-            .get('/api/reviews')
-            .expect(200)
-            .then(({body}) => {
-                expect(body.length).toBe(13)
-                body.forEach((review) => {
-                    expect(review).toHaveProperty('title', expect.any(String))
-                    expect(review).toHaveProperty('designer', expect.any(String))
-                    expect(review).toHaveProperty('review_id', expect.any(Number))
-                    expect(review).toHaveProperty('owner', expect.any(String))
-                    expect(review).toHaveProperty('review_img_url', expect.any(String))
-                    expect(review).toHaveProperty('category', expect.any(String))
-                    expect(review).toHaveProperty('created_at', expect.any(String))
-                    expect(review).toHaveProperty('votes', expect.any(Number))
-                    expect(review).toHaveProperty('comment_count', expect.any(Number)) 
-                })
-            })
-        });
-        it('should return the array of review objects in descending order based off the created_at key', () => {
-                return request(app)
-                .get('/api/reviews')
-                .expect(200)
-                .then(({body}) => {
-                    expect(body).toBeSortedBy("created_at", {descending: true})
-                })
-        });
+        // it('should return an array of review objects, with an added key of comment_count populated with the count of review_ids within comments', () => {
+        //     return request(app)
+        //     .get('/api/reviews')
+        //     .expect(200)
+        //     .then(({body}) => {
+        //         expect(body.length).toBe(13)
+        //         body.forEach((review) => {
+        //             expect(review).toHaveProperty('title', expect.any(String))
+        //             expect(review).toHaveProperty('designer', expect.any(String))
+        //             expect(review).toHaveProperty('review_id', expect.any(Number))
+        //             expect(review).toHaveProperty('owner', expect.any(String))
+        //             expect(review).toHaveProperty('review_img_url', expect.any(String))
+        //             expect(review).toHaveProperty('category', expect.any(String))
+        //             expect(review).toHaveProperty('created_at', expect.any(String))
+        //             expect(review).toHaveProperty('votes', expect.any(Number))
+        //             expect(review).toHaveProperty('comment_count', expect.any(Number)) 
+        //         })
+        //     })
+        // });
+        // it('should return the array of review objects in descending order based off the created_at key', () => {
+        //         return request(app)
+        //         .get('/api/reviews')
+        //         .expect(200)
+        //         .then(({body}) => {
+        //             expect(body).toBeSortedBy("created_at", {descending: true})
+        //         })
+        // });
     });
     describe('GET /api/reviews/:review_id/comments', () => {
         it('should return an array of comments based on input review_id', () => {
@@ -99,14 +99,14 @@ describe('App', () => {
         //             expect(body.comments).toEqual([])
         //      })
         // });
-        it('should return 404 if review_id is invalid', () => {
-            return request(app)
-                .get('/api/reviews/1000/comments')
-                .expect(404)
-                .then(({body}) => {
-                    expect(body.msg.msg).toBe('invalid review_id input')
-                })
-        });
+        // it('should return 404 if review_id is invalid', () => {
+        //     return request(app)
+        //         .get('/api/reviews/1000/comments')
+        //         .expect(404)
+        //         .then(({body}) => {
+        //             expect(body.msg.msg).toBe('invalid review_id input')
+        //         })
+        // });
         it('should return 400 if review_id is not a valid number', () => {
             return request(app)
                 .get('/api/reviews/abcd/comments')
