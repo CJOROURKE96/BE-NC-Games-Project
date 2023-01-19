@@ -41,7 +41,7 @@ function postCommentByReviewId(request, response, next) {
         response.status(201).send({comment: result[1]})
     }).catch(next)
 
-    
+}
 
 module.exports = {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId, postCommentByReviewId}
 
