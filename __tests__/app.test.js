@@ -66,6 +66,7 @@ describe('App', () => {
                 })
         });
     });
+
     describe('GET /api/reviews/:review_id', () => {
         it('should return a review object by review id', () => {
             return request(app)
@@ -102,6 +103,50 @@ describe('App', () => {
             .then(({body}) => {
                 expect(body.msg).toBe("Bad Request")
             })
+        })
+
+    describe('GET /api/reviews/:review_id/comments', () => {
+        it('should return an array of comments based on input review_id', () => {
+            return request(app)
+            .get("/api/reviews/2/comments")
+            .expect(200)
+            .then(({body: {comments}}) => {
+                expect(comments.length).toBe(3)
+                comments.forEach((comment) => {
+                    expect(comment).toHaveProperty("comment_id", expect.any(Number))
+                    expect(comment).toHaveProperty("body", expect.any(String))
+                    expect(comment).toHaveProperty("review_id", expect.any(Number))
+                    expect(comment).toHaveProperty("author", expect.any(String))
+                    expect(comment).toHaveProperty("votes", expect.any(Number))
+                    expect(comment).toHaveProperty("created_at", expect.any(String))
+                })
+            })
         });
-    });
-});
+        it('should return comments with the most recent displayed first ', () => {
+            return request(app)
+                .get('/api/reviews/2/comments')
+                .expect(200)
+                .then(({body}) => {
+                    expect(body.comments).toBeSortedBy("created_at", {descending: true})
+            })
+        });
+        it('should return 200 for a request to a blank comment array', () => {
+            return request(app)
+                .get('/api/reviews/1/comments')
+                .expect(200)
+                .then(({body}) => {
+                    expect(body.comments).toEqual([])
+             })
+        });
+        it('should return 404 if review_id is invalid', () => {
+            return request(app)
+                .get('/api/reviews/1000/comments')
+                .expect(404)
+                .then(({body}) => {
+                    expect(body.msg).toBe('review_id does not exist')
+                })
+
+        });
+    })
+})
+})
