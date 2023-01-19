@@ -22,8 +22,8 @@ app.use((err, request, response, next) => {
 })
 
 app.use((err, request, response, next) => {
-    if(err.code) {
-    response.status(err.status).send({err: err.msg})
+    if(err.status) {
+    response.status(err.status).send({msg: err.msg})
     } else {
         next(err)
     }

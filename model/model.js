@@ -42,15 +42,8 @@ function fetchReviewsByReviewId(id) {
 function fetchCommentsByReviewId(id) {
   const sql = `SELECT * FROM comments WHERE comments.review_id = $1 ORDER BY comments.created_at DESC;`;
   return db.query(sql, [id]).then(({ rows }) => {
-    // console.log(rows, "<-- rows")
-    // console.log(id, "<-- ID NUM")
-    // console.log(rows.reviews.review_id, "<-- review_id")
-    if ((!rows.length && id < 1) || id > 13) {
-      return Promise.reject({ status: 404, msg: 'invalid review_id input' });
-    } else {
-      return rows;
-    }
-  });
+    return rows;
+    })
 }
 
 module.exports = {

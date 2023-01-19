@@ -15,21 +15,17 @@ function getReviews(request, response, next) {
 
 function getReviewsByReviewId(request, response, next) {
     const {review_id} = request.params
-    Promise.all([fetchReviewsByReviewId(review_id)])
-    .then(([results]) => {
+    fetchReviewsByReviewId(review_id)
+    .then((results) => {
         const reviews = results
         response.status(200).send({review: reviews})
     }).catch(next)
-
-    // ERROR TESTING ^^
-    // number too big
-    // string input
 }
 
 
 function getCommentsByReviewId(request, response, next) {
     const {review_id} = request.params
-    fetchCommentsByReviewId(review_id).then((result) => {
+    Promise.all([fetchCommentsByReviewId(review_id), fetchReviewsByReviewId(review_id)]).then(([result]) => {
         response.status(200).send({comments: result})
     }).catch(next)
 }
