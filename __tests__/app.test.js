@@ -104,6 +104,15 @@ describe('App', () => {
                 .get('/api/reviews/1000/comments')
                 .expect(404)
                 .then(({body}) => {
+                    expect(body.msg.msg).toBe('invalid review_id input')
+                })
+        });
+        it('should return 400 if review_id is not a valid number', () => {
+            return request(app)
+                .get('/api/reviews/abcd/comments')
+                .expect(400)
+                .then(({body}) => {
+                    expect(body.msg).toBe('Bad Request')
                 })
         });
     });

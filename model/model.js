@@ -1,5 +1,6 @@
 const db = require('../db/connection')
 const format = require('pg-format')
+const reviews = require('../db/data/test-data/reviews')
 
 function fetchCategories() {
 const sql = `SELECT * FROM categories`
@@ -24,12 +25,13 @@ function fetchReviews() {
 }
 
 function fetchCommentsByReviewId(id) {
-    const sql = `SELECT * FROM comments WHERE comments.review_id = $1 ORDER BY created_at DESC;`
+    const sql = `SELECT * FROM comments RIGHT JOIN reviews ON reviews.review_id = comments.review_id WHERE comments.review_id = $1 ORDER BY comments.created_at DESC;`
     return db.query(sql, [id]).then(({rows}) => {
-        if (!rows.length && id < 1 || id > 13) {
+        console.log(rows, "<-- rows")
+        console.log(id, "<-- ID NUM")
+        console.log(reviews, "<-- review_id")
+        if (!rows.length && id !== reviews.review_id) {
             return Promise.reject({status: 404, msg: "invalid review_id input"})
-        } else if (rows === []){
-            return Promise.reject({status: 200, msg: "Does This Work??"})
         } else {
         return rows
         }
