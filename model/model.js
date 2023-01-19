@@ -46,10 +46,7 @@ function addCommentByReviewId(id, params) {
   return db.query(sql, [params.body, params.username, id]).then(({rows}) => {
     return rows[0]
   })
-
-}
-
-
+  }
 
 
 

@@ -17,7 +17,6 @@ app.get('/api/reviews/:review_id/comments', getCommentsByReviewId)
 app.post('/api/reviews/:review_id/comments', postCommentByReviewId)
 
 
-
 app.use((err, request, response, next) => {
 if(err.status) {
     response.status(err.status).send({msg: err.msg})
