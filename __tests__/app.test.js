@@ -149,4 +149,32 @@ describe('App', () => {
         });
     })
 })
+describe('POST /api/reviews/:review_id/comments', () => {
+    it('should return something', () => {
+        const input = {
+            username: "bainesface",
+            body: "This game is great"
+        }
+        return request(app)
+        .post('/api/reviews/2/comments')
+        .send(input)
+        .expect(201)
+        .then(({body}) => {
+            console.log(body.comment, "<-- BODY ")
+            expect(body.comment.author).toBe("bainesface")
+            expect(body.comment.body).toBe('This game is great')
+            expect(typeof body.comment.review_id).toBe("number")
+        })
+    });
+    it('should return 404 when passed a number that is not valid', () => {
+        return request(app)
+        .post('/api/reviews/1000/comments')
+        .expect(404)
+    });
+    it('should return a 400 when passed anything that is not a number', () => {
+        return request(app)
+        .post('/api/reviews/abcd/comments')
+        .expect(400)
+    });
+});
 })

@@ -1,20 +1,21 @@
 const express = require('express')
 
-const {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId} = require('../controller/controller')
+const {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId, postCommentByReviewId} = require('../controller/controller')
 
 const app = express()
+
+app.use(express.json())
 
 app.get('/api/categories', getCategories)
 
 app.get('/api/reviews', getReviews)
 
-
 app.get("/api/reviews/:review_id", getReviewsByReviewId)
 
-
-
-
 app.get('/api/reviews/:review_id/comments', getCommentsByReviewId)
+
+app.post('/api/reviews/:review_id/comments', postCommentByReviewId)
+
 
 
 app.use((err, request, response, next) => {

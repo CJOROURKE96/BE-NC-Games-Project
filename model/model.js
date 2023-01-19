@@ -41,10 +41,18 @@ function fetchCommentsByReviewId(id) {
         })
 }
 
+function addCommentByReviewId(id, params) {
+  const sql = `INSERT INTO comments (body, author, review_id) VALUES ($1, $2, $3) RETURNING *;`
+  return db.query(sql, [params.body, params.username, id]).then(({rows}) => {
+    return rows[0]
+  })
+
+}
 
 
 
 
 
-module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId}
+
+module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId}
 

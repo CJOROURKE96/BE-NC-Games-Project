@@ -1,5 +1,5 @@
 const { response } = require('../app/app')
-const {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId} = require('../model/model')
+const {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId } = require('../model/model')
 
 
 function getCategories(request, response, next) {
@@ -33,5 +33,12 @@ function getCommentsByReviewId(request, response, next) {
     }).catch(next)
 }
 
-module.exports = {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId}
+function postCommentByReviewId(request, response, next) {
+    const {review_id} = request.params
+    Promise.all([fetchReviewsByReviewId(review_id), addCommentByReviewId(review_id, request.body)]).then((result) => {
+        response.status(201).send({comment: result[1]})
+    }).catch(next)
+}
+
+module.exports = {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId, postCommentByReviewId}
 
