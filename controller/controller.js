@@ -17,7 +17,6 @@ function getReviews(request, response, next) {
         sort_by: request.query.sort_by,
         order: request.query.order 
         }
-    console.log(queries, "<--- CONTROLLER")
     fetchReviews(queries).then((result) => {
         response.status(200).send({reviews: result})
     }).catch(next)

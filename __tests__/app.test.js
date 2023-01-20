@@ -127,7 +127,6 @@ describe('App', () => {
                 .get('/api/reviews/2/comments')
                 .expect(200)
                 .then(({body}) => {
-                    console.log(body.comments, "<--- Comments")
                     expect(body.comments).toBeSortedBy("created_at", {descending: true})
             })
         });
@@ -162,7 +161,6 @@ describe('POST /api/reviews/:review_id/comments', () => {
         .send(input)
         .expect(201)
         .then(({body}) => {
-            console.log(body, "<--- BODY")
             expect(body.comment.author).toBe("bainesface")
             expect(body.comment.body).toBe('This game is great')
             expect(typeof body.comment.review_id).toBe("number")
@@ -268,7 +266,6 @@ describe('PATCH /api/reviews/:review_id', () => {
             .get('/api/reviews?order=ASC')
             .expect(200)
             .then(({body}) => {
-                console.log(body.reviews, "<--- BODY REV")
                 expect(body.reviews).toBeSortedBy("created_at", {descending: false})
         })
         });
