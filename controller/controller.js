@@ -1,6 +1,7 @@
 const { response } = require('../app/app')
 
-const {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId} = require('../model/model')
+const {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId, updateReview} = require('../model/model')
+
 
 
 
@@ -35,13 +36,20 @@ function getCommentsByReviewId(request, response, next) {
     }).catch(next)
 }
 
+
 function postCommentByReviewId(request, response, next) {
     const {review_id} = request.params
     Promise.all([fetchReviewsByReviewId(review_id), addCommentByReviewId(review_id, request.body)]).then((result) => {
         response.status(201).send({comment: result[1]})
     }).catch(next)
 
+function patchReview(request, response, next) {
+    const {review_id} = request.params
+    const {inc_votes} = request.body
+    updateReview(review_id, inc_votes).then((result) => {
+        response.status(202).send(result)
+    }).catch(next)
 }
 
-module.exports = {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId, postCommentByReviewId}
+module.exports = {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId, postCommentByReviewId, patchReview}
 

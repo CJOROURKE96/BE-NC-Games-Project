@@ -149,6 +149,7 @@ describe('App', () => {
         });
     })
 })
+
 describe('POST /api/reviews/:review_id/comments', () => {
     it('should return a new comment with the passed username and comment', () => {
         const input = {
@@ -176,4 +177,41 @@ describe('POST /api/reviews/:review_id/comments', () => {
         .expect(400)
     });
 });
+
+    describe('PATCH /api/reviews/:review_id', () => {
+        it('should return an updated review with incremented votes ', () => {
+            const input = {inc_votes: 1}
+            return request(app)
+            .patch('/api/reviews/1')
+            .send(input)
+            .expect(202)
+            .then(({body}) => {
+                expect(body.votes).toBe(2)
+            })
+         });
+         it('should return an updated review with decremented votes ', () => {
+            const input = {inc_votes: -100}
+            return request(app)
+            .patch('/api/reviews/1')
+            .send(input)
+            .expect(202)
+            .then(({body}) => {
+                expect(body.votes).toBe(-99)
+            })
+         });
+         it('should return a 404 with invalid path  ', () => {
+            const input = {inc_votes: 1}
+            return request(app)
+            .patch('/api/reviews/1000')
+            .send(input)
+            .expect(404)
+            })
+            it('should return a 400 with invalid path  ', () => {
+                const input = {inc_votes: 1}
+                return request(app)
+                .patch('/api/reviews/abcd')
+                .send(input)
+                .expect(400)
+                })
+         });
 })
