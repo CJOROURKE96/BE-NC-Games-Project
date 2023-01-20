@@ -48,8 +48,17 @@ function addCommentByReviewId(id, params) {
   })
   }
 
+function fetchUsers() {
+  const sql = `SELECT * FROM users`;
+  return db.query(sql).then(({ rows }) => {
+    if (!rows) {
+      return Promise.reject({ status: 400, msg: 'Invalid query input' });
+    } else {
+      return rows;
+    }
+  });
+}
 
 
-
-module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId}
+module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId, fetchUsers}
 

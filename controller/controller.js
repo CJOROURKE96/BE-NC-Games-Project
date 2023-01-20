@@ -1,6 +1,6 @@
 const { response } = require('../app/app')
 
-const {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId} = require('../model/model')
+const {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId, fetchUsers} = require('../model/model')
 
 
 
@@ -43,5 +43,11 @@ function postCommentByReviewId(request, response, next) {
 
 }
 
-module.exports = {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId, postCommentByReviewId}
+function getUsers(request, response, next) {
+    fetchUsers().then((result) => {
+        response.status(200).send(result)
+    }).catch(next)
+}
+
+module.exports = {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId, postCommentByReviewId, getUsers}
 

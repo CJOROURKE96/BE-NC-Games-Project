@@ -1,6 +1,6 @@
 const express = require('express')
 
-const {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId, postCommentByReviewId} = require('../controller/controller')
+const {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId, postCommentByReviewId, getUsers} = require('../controller/controller')
 
 const app = express()
 
@@ -15,6 +15,8 @@ app.get("/api/reviews/:review_id", getReviewsByReviewId)
 app.get('/api/reviews/:review_id/comments', getCommentsByReviewId)
 
 app.post('/api/reviews/:review_id/comments', postCommentByReviewId)
+
+app.get('/api/users', getUsers)
 
 
 app.use((err, request, response, next) => {
@@ -37,6 +39,7 @@ app.use((err, request, response, next) => {
 
 
 app.use((err, request, response, next) => {
+    console.log(err)
     response.status(500).send({msg: 'Internal Server Error'})
 }) 
 

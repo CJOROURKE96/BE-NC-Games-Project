@@ -176,4 +176,25 @@ describe('POST /api/reviews/:review_id/comments', () => {
         .expect(400)
     });
 });
+    describe('GET /api/users', () => {
+        it('should return an array of user objects', () => {
+            return request(app)
+            .get('/api/users')
+            .expect(200)
+            .then(({body}) => {
+                expect(body.length).toBe(4)
+                body.forEach((user) => {
+                    expect(user).toHaveProperty('username', expect.any(String))
+                    expect(user).toHaveProperty('name', expect.any(String))
+                    expect(user).toHaveProperty('avatar_url', expect.any(String))
+                })
+
+        });
+    });
+    it('should return a 404 error when accessing the wrong URL', () => {
+        return request(app)
+        .get('/users/abcd')
+        .expect(404)
+    });
+ })
 })
