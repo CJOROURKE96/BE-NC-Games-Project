@@ -13,15 +13,24 @@ function fetchCategories() {
   });
 }
 
-function fetchReviews() {
-  const sql = `SELECT reviews.review_id, reviews.title, reviews.designer, reviews.owner, reviews.review_img_url, reviews.category, reviews.created_at, reviews.votes, CAST(COUNT(comments.review_id) AS INT) AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id GROUP BY reviews.review_id ORDER BY reviews.created_at DESC;`;
-  return db.query(sql).then(({ rows }) => {
-    if (!rows) {
-      return Promise.reject({ status: 400, msg: 'Invalid query input' });
-    } else {
-      return rows;
-    }
-  });
+function fetchReviews({category, sort_by = "created_at", order = "DESC"}) {
+  const sortValues = ['title', 'designer', 'owner', 'review_img_url', 'review_body', 'category', 'created_at', 'votes']
+  const orderValues = ['asc', 'desc']
+  
+  if (sortValues.includes(sort_by) && orderValues.includes(order.toLowerCase())) {
+  let sql = `SELECT reviews.review_id, reviews.title, reviews.designer, reviews.owner, reviews.review_img_url, reviews.category, reviews.created_at, reviews.votes, CAST(COUNT(comments.review_id) AS INT) AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id ` 
+  const queryValues = []
+  if(category) {
+  sql += `WHERE reviews.category = $1 `
+  queryValues.push(category)
+  }
+  
+  sql += `GROUP BY reviews.review_id ORDER BY reviews.${sort_by} ${order};`
+
+  return db.query(sql, queryValues).then(({ rows }) => {
+    return rows
+  })
+}
 }
 
 
