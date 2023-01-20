@@ -41,15 +41,18 @@ function fetchCommentsByReviewId(id) {
         })
   }
 
-function addCommentByReviewId() {
+// function addCommentByReviewId() {
 
-}
+// }
 
-function updateReview(id, {votes}) {
- const sql = `UPDATE reviews SET votes = $1 WHERE review_id = $2 RETURNING *;`
+function updateReview(id, votes) {
+const sql = `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *;`
  return db.query(sql, [votes, id]).then(({rows}) => {
-  console.log(rows, "<-- MODEL")
-  return rows
+  if (!rows.length) {
+    return Promise.reject({status: 404, msg: "review not found"})
+  } else {
+  return rows[0]
+  }
  })
 }
 
@@ -57,5 +60,6 @@ function updateReview(id, {votes}) {
 
 
 
-module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId, updateReview}
+
+module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, updateReview}
 
