@@ -251,6 +251,8 @@ describe('PATCH /api/reviews/:review_id', () => {
             .expect(200)
             .then(({body}) => {
                 expect(body.reviews[0].category).toBe("dexterity")
+                expect(body.reviews).toBeSortedBy("created_at", {descending: true})
+
             })
         });
         it('should return a correct review with sort_by query ', () => {
@@ -259,6 +261,8 @@ describe('PATCH /api/reviews/:review_id', () => {
             .expect(200)
             .then(({body}) => {
                 expect(body.reviews[0].votes).toBe(100)
+                expect(body.reviews).toBeSortedBy("votes", {descending: true})
+
             })
         });
         it('should return a correct review with order query ', () => {
@@ -272,6 +276,16 @@ describe('PATCH /api/reviews/:review_id', () => {
         it('should return 404 when passed an invalid query', () => {
             return request(app)
             .post('/api/reviews?category=apples')
+            .expect(404)
+        });
+        it('should return 404 when passed an invalid query', () => {
+            return request(app)
+            .post('/api/reviews?sort_by=apples')
+            .expect(404)
+        });
+        it('should return 404 when passed an invalid query', () => {
+            return request(app)
+            .post('/api/reviews?order=apples')
             .expect(404)
         });
     });
