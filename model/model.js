@@ -47,8 +47,9 @@ function addCommentByReviewId(id, params) {
     return rows[0]
   })
   }
-
-function updateReview(id, votes) {
+  
+  
+  function updateReview(id, votes) {
 const sql = `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *;`
  return db.query(sql, [votes, id]).then(({rows}) => {
   if (!rows.length) {
@@ -60,9 +61,20 @@ const sql = `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNIN
 }
 
 
+function fetchUsers() {
+  const sql = `SELECT * FROM users`;
+  return db.query(sql).then(({ rows }) => {
+    if (!rows) {
+      return Promise.reject({ status: 400, msg: 'Invalid query input' });
+    } else {
+      return rows;
+    }
+  });
+}
 
 
 
 
-module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId, updateReview}
+module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId, updateReview, fetchUsers}
+
 
