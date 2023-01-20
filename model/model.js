@@ -39,7 +39,7 @@ function fetchCommentsByReviewId(id) {
     return db.query(sql, [id]).then(({rows}) => {
         return rows
         })
-}
+  }
 
 function addCommentByReviewId(id, params) {
   const sql = `INSERT INTO comments (body, author, review_id) VALUES ($1, $2, $3) RETURNING *;`
@@ -47,6 +47,19 @@ function addCommentByReviewId(id, params) {
     return rows[0]
   })
   }
+  
+  
+  function updateReview(id, votes) {
+const sql = `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *;`
+ return db.query(sql, [votes, id]).then(({rows}) => {
+  if (!rows.length) {
+    return Promise.reject({status: 404, msg: "review not found"})
+  } else {
+  return rows[0]
+  }
+ })
+}
+
 
 function fetchUsers() {
   const sql = `SELECT * FROM users`;
@@ -60,5 +73,8 @@ function fetchUsers() {
 }
 
 
-module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId, fetchUsers}
+
+
+module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId, updateReview, fetchUsers}
+
 

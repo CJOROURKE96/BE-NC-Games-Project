@@ -149,6 +149,7 @@ describe('App', () => {
         });
     })
 })
+
 describe('POST /api/reviews/:review_id/comments', () => {
     it('should return a new comment with the passed username and comment', () => {
         const input = {
@@ -160,6 +161,7 @@ describe('POST /api/reviews/:review_id/comments', () => {
         .send(input)
         .expect(201)
         .then(({body}) => {
+            console.log(body, "<--- BODY")
             expect(body.comment.author).toBe("bainesface")
             expect(body.comment.body).toBe('This game is great')
             expect(typeof body.comment.review_id).toBe("number")
@@ -176,6 +178,52 @@ describe('POST /api/reviews/:review_id/comments', () => {
         .expect(400)
     });
 });
+
+
+describe('PATCH /api/reviews/:review_id', () => {
+        it('should return an updated review with incremented votes', () => {
+            const input = {inc_votes: 1}
+            return request(app)
+            .patch('/api/reviews/1')
+            .send(input)
+            .expect(200)
+            .then(({body}) => {
+                expect(body.votes).toBe(2)
+            })
+         });
+         it('should return an updated review with decremented votes', () => {
+            const input = {inc_votes: -100}
+            return request(app)
+            .patch('/api/reviews/1')
+            .send(input)
+            .expect(200)
+            .then(({body}) => {
+                expect(body.votes).toBe(-99)
+            })
+         });
+         it('should return a 404 when review_id is valid but votes key is empty', () => {
+            const input = {inc_votes: 1}
+            return request(app)
+            .patch('/api/reviews/1000')
+            .send(input)
+            .expect(404)
+            })
+            it('should return a 400 when passed a non numeric as a review_id', () => {
+                const input = {inc_votes: 1}
+                return request(app)
+                .patch('/api/reviews/abcd')
+                .send(input)
+                .expect(400)
+                })
+            it('should return a 400 when passed an incorrect input value', () => {
+                    const input = {}
+                    return request(app)
+                    .patch('/api/reviews/2')
+                    .send(input)
+                    .expect(400)
+                })
+         });
+
     describe('GET /api/users', () => {
         it('should return an array of user objects', () => {
             return request(app)
@@ -197,4 +245,5 @@ describe('POST /api/reviews/:review_id/comments', () => {
         .expect(404)
     });
  })
+
 })
