@@ -45,10 +45,17 @@ function addCommentByReviewId() {
 
 }
 
+function updateReview(id, {votes}) {
+ const sql = `UPDATE reviews SET votes = $1 WHERE review_id = $2 RETURNING *;`
+ return db.query(sql, [votes, id]).then(({rows}) => {
+  console.log(rows, "<-- MODEL")
+  return rows
+ })
+}
 
 
 
 
 
-module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId}
+module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId, updateReview}
 

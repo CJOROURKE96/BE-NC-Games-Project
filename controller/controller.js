@@ -1,5 +1,5 @@
 const { response } = require('../app/app')
-const {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId} = require('../model/model')
+const {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId, updateReview} = require('../model/model')
 
 
 function getCategories(request, response, next) {
@@ -39,5 +39,12 @@ function postCommentByReviewId(request, response, next) {
     })
 }
 
-module.exports = {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId, postCommentByReviewId}
+function patchReview() {
+    const {review_id} = request.params
+    updateReview(review_id).then((result) => {
+        console.log(result, "<--- CONTROLLER")
+    })
+}
+
+module.exports = {getCategories, getReviews, getReviewsByReviewId, getCommentsByReviewId, postCommentByReviewId, patchReview}
 

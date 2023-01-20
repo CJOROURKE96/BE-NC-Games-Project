@@ -149,4 +149,14 @@ describe('App', () => {
         });
     })
 })
+    // describe('PATCH /api/reviews/:review_id', () => {
+    //     const input = {inc_votes: 1}
+    //     it('should return an updated review with incremented votes ', () => {
+    //         return request(app)
+    //         .patch('/api/reviews/1')
+    //         .send(input)
+    //         .expect(201)
+
+    //     });
+    // });
 })
