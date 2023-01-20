@@ -11,6 +11,10 @@ fetchCategories().then((result) => {
 }
 
 function getReviews(request, response, next) {
+    const queries = {
+        category: request.query.category,
+        
+    }
     fetchReviews().then((result) => {
         response.status(200).send({reviews: result})
     }).catch(next)
