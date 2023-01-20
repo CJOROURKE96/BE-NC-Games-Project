@@ -127,6 +127,7 @@ describe('App', () => {
                 .get('/api/reviews/2/comments')
                 .expect(200)
                 .then(({body}) => {
+                    console.log(body.comments, "<--- Comments")
                     expect(body.comments).toBeSortedBy("created_at", {descending: true})
             })
         });
@@ -176,4 +177,36 @@ describe('POST /api/reviews/:review_id/comments', () => {
         .expect(400)
     });
 });
+    describe('GET /api/reviews(queries)', () => {
+        it('should return a correct review with catergory query ', () => {
+            return request(app)
+            .get('/api/reviews?category=dexterity')
+            .expect(200)
+            .then(({body}) => {
+                expect(body.reviews[0].category).toBe("dexterity")
+            })
+        });
+        it('should return a correct review with sort_by query ', () => {
+            return request(app)
+            .get('/api/reviews?sort_by=votes')
+            .expect(200)
+            .then(({body}) => {
+                expect(body.reviews[0].votes).toBe(100)
+            })
+        });
+        it('should return a correct review with order query ', () => {
+            return request(app)
+            .get('/api/reviews?order=ASC')
+            .expect(200)
+            .then(({body}) => {
+                console.log(body.reviews, "<--- BODY REV")
+                expect(body.reviews).toBeSortedBy("created_at", {descending: false})
+        })
+        });
+        it('should return 404 when passed an invalid query', () => {
+            return request(app)
+            .post('/api/reviews?category=apples')
+            .expect(404)
+        });
+    });
 })
