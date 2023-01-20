@@ -41,9 +41,12 @@ function fetchCommentsByReviewId(id) {
         })
   }
 
-// function addCommentByReviewId() {
-
-// }
+function addCommentByReviewId(id, params) {
+  const sql = `INSERT INTO comments (body, author, review_id) VALUES ($1, $2, $3) RETURNING *;`
+  return db.query(sql, [params.body, params.username, id]).then(({rows}) => {
+    return rows[0]
+  })
+  }
 
 function updateReview(id, votes) {
 const sql = `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNING *;`
@@ -61,5 +64,5 @@ const sql = `UPDATE reviews SET votes = votes + $1 WHERE review_id = $2 RETURNIN
 
 
 
-module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, updateReview}
+module.exports = {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId, updateReview}
 

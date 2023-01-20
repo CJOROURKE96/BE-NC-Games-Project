@@ -149,6 +149,35 @@ describe('App', () => {
         });
     })
 })
+
+describe('POST /api/reviews/:review_id/comments', () => {
+    it('should return a new comment with the passed username and comment', () => {
+        const input = {
+            username: "bainesface",
+            body: "This game is great"
+        }
+        return request(app)
+        .post('/api/reviews/2/comments')
+        .send(input)
+        .expect(201)
+        .then(({body}) => {
+            expect(body.comment.author).toBe("bainesface")
+            expect(body.comment.body).toBe('This game is great')
+            expect(typeof body.comment.review_id).toBe("number")
+        })
+    });
+    it('should return 404 when passed a number that is not valid', () => {
+        return request(app)
+        .post('/api/reviews/1000/comments')
+        .expect(404)
+    });
+    it('should return a 400 when passed anything that is not a number', () => {
+        return request(app)
+        .post('/api/reviews/abcd/comments')
+        .expect(400)
+    });
+});
+
     describe('PATCH /api/reviews/:review_id', () => {
         it('should return an updated review with incremented votes ', () => {
             const input = {inc_votes: 1}
