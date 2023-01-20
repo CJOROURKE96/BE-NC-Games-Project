@@ -150,7 +150,7 @@ describe('App', () => {
     })
 })
 describe('POST /api/reviews/:review_id/comments', () => {
-    it('should return something', () => {
+    it('should return a new comment with the passed username and comment', () => {
         const input = {
             username: "bainesface",
             body: "This game is great"
@@ -160,7 +160,6 @@ describe('POST /api/reviews/:review_id/comments', () => {
         .send(input)
         .expect(201)
         .then(({body}) => {
-            console.log(body.comment, "<-- BODY ")
             expect(body.comment.author).toBe("bainesface")
             expect(body.comment.body).toBe('This game is great')
             expect(typeof body.comment.review_id).toBe("number")
