@@ -39,13 +39,14 @@ function fetchCommentsByReviewId(id) {
     return db.query(sql, [id]).then(({rows}) => {
         return rows
         })
-  }
-
-function addCommentByReviewId() {
-
 }
 
-
+function addCommentByReviewId(id, params) {
+  const sql = `INSERT INTO comments (body, author, review_id) VALUES ($1, $2, $3) RETURNING *;`
+  return db.query(sql, [params.body, params.username, id]).then(({rows}) => {
+    return rows[0]
+  })
+  }
 
 
 
