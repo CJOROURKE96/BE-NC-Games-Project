@@ -1,5 +1,3 @@
-const { response } = require('../app/app')
-
 const {fetchCategories, fetchReviews, fetchReviewsByReviewId, fetchCommentsByReviewId, addCommentByReviewId, updateReview, fetchUsers} = require('../model/model')
 
 
