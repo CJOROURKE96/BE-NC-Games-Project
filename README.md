@@ -11,3 +11,7 @@ In this case;
 
 .env.development: should contain PGDATABASE=nc_games
 .env.test: should contain PGDATABASE=nc_games_test
+
+Link to Front-End Repo: 
+
+https://github.com/CJOROURKE96/FE-NC-Games-Project
